@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"errors"
+	"strings"
 	"students-api/db"
 	"students-api/models"
 	// "students-api/models"
@@ -135,20 +136,19 @@ func Delete(id int) error {
 }
 
 func isUniqueConstraintErr(err error) bool {
-	return err != nil && errors.Is(err, errors.New("UNIQUE constraint failed: students.email")) ||
-		constainsString(err.Error(), "UNIQUE constraint failed")
+	return err != nil && strings.Contains(err.Error(), "UNIQUE constraint failed")
 }
 
-func constainsString(s, substr string) bool {
-	return len(s) >= len(substr) && (s == substr ||
-		len(s) > 0 && constainsSubstring(s, substr))
-}
+// func constainsString(s, substr string) bool {
+// 	return len(s) >= len(substr) && (s == substr ||
+// 		len(s) > 0 && constainsSubstring(s, substr))
+// }
 
-func constainsSubstring(s, substr string) bool {
-	for i := 0; i <= len(s)-len(substr); i++ {
-		if s[i:i+len(substr)] == substr {
-			return true
-		}
-	}
-	return false
-}
+// func constainsSubstring(s, substr string) bool {
+// 	for i := 0; i <= len(s)-len(substr); i++ {
+// 		if s[i:i+len(substr)] == substr {
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
